@@ -180,7 +180,7 @@ class BeanDefinitionValueResolver {
 			}
 			return copy;
 		}
-		else if (value instanceof TypedStringValue) {
+		else if (value instanceof TypedStringValue) {// 处理String类型
 			// Convert value to target type here.
 			TypedStringValue typedStringValue = (TypedStringValue) value;
 			Object valueObject = evaluate(typedStringValue);
@@ -200,7 +200,7 @@ class BeanDefinitionValueResolver {
 						"Error converting typed String value for " + argName, ex);
 			}
 		}
-		else {
+		else {// 处理 其他数据类型：基本数据类型
 			return evaluate(value);
 		}
 	}

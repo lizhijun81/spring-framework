@@ -207,7 +207,7 @@ public class PropertyEditorRegistrySupport implements PropertyEditorRegistry {
 	}
 
 	/**
-	 * Actually register the default editors for this registry instance.
+	 * Actually register the default editors for this registry instance. 各种默认的PropertyEditor在设置Bean的属性时对属性值进行转换
 	 */
 	private void createDefaultEditors() {
 		this.defaultEditors = new HashMap<Class<?>, PropertyEditor>(64);

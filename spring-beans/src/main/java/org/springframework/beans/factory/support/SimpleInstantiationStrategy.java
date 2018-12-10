@@ -58,7 +58,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	@Override
 	public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
-		if (bd.getMethodOverrides().isEmpty()) {
+		if (bd.getMethodOverrides().isEmpty()) {// todo 覆盖实例的方法，通过cglib创建子类
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
 				constructorToUse = (Constructor<?>) bd.resolvedConstructorOrFactoryMethod;
@@ -77,7 +77,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 							});
 						}
 						else {
-							constructorToUse =	clazz.getDeclaredConstructor((Class[]) null);
+							constructorToUse =	clazz.getDeclaredConstructor((Class[]) null);// 调用Bean的无参构造函数
 						}
 						bd.resolvedConstructorOrFactoryMethod = constructorToUse;
 					}
@@ -86,7 +86,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 					}
 				}
 			}
-			return BeanUtils.instantiateClass(constructorToUse);
+			return BeanUtils.instantiateClass(constructorToUse);// 通过默认的构造函数创建Bean
 		}
 		else {
 			// Must generate CGLIB subclass.

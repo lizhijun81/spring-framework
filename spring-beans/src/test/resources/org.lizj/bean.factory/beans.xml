@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="car" class="org.lizj.beans.ioc.Car" >
+        <property name="brand" value="奥迪" />
+        <property name="color" value="白色"/>
+        <property name="person" ref="person"/>
+    </bean>
+
+    <bean id="person" class="org.lizj.beans.ioc.Person" >
+        <property name="name" value="yy"/>
+        <property name="age" value="10"/>
+        <property name="sex" value="1"/>
+        <property name="car" ref="car"/>
+    </bean>
+
+    <!-- 通过 factory-bean 创建Bean -->
+    <!--<bean id="personFactoryBean" class="org.lizj.beans.ioc.PersonFactoryBean" />-->
+    <!--<bean id="person_1" factory-bean="personFactoryBean" factory-method="getPerson" />-->
+
+</beans>

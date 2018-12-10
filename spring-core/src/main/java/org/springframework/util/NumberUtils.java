@@ -193,7 +193,7 @@ public abstract class NumberUtils {
 	 * @see java.math.BigDecimal#BigDecimal(String)
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Number> T parseNumber(String text, Class<T> targetClass) {
+	public static <T extends Number> T parseNumber(String text, Class<T> targetClass) {// todo:将字符串装换成 数字
 		Assert.notNull(text, "Text must not be null");
 		Assert.notNull(targetClass, "Target class must not be null");
 		String trimmed = StringUtils.trimAllWhitespace(text);

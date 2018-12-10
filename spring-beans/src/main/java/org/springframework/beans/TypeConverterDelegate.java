@@ -159,7 +159,7 @@ class TypeConverterDelegate {
 	public <T> T convertIfNecessary(String propertyName, Object oldValue, Object newValue,
 			Class<T> requiredType, TypeDescriptor typeDescriptor) throws IllegalArgumentException {
 
-		// Custom editor for this type?
+		// Custom editor for this type? 匹配自定义的 CustomEditor
 		PropertyEditor editor = this.propertyEditorRegistry.findCustomEditor(requiredType, propertyName);
 
 		ConversionFailedException conversionAttemptEx = null;
@@ -181,7 +181,7 @@ class TypeConverterDelegate {
 
 		Object convertedValue = newValue;
 
-		// Value not of required type?
+		// Value not of required type? 检查值的类型和Bean中的需要的类型是否相同
 		if (editor != null || (requiredType != null && !ClassUtils.isAssignableValue(requiredType, convertedValue))) {
 			if (typeDescriptor != null && requiredType != null && Collection.class.isAssignableFrom(requiredType) &&
 					convertedValue instanceof String) {
@@ -194,9 +194,9 @@ class TypeConverterDelegate {
 				}
 			}
 			if (editor == null) {
-				editor = findDefaultEditor(requiredType);
+				editor = findDefaultEditor(requiredType);// 默认的PropertyEditor
 			}
-			convertedValue = doConvertValue(oldValue, convertedValue, requiredType, editor);
+			convertedValue = doConvertValue(oldValue, convertedValue, requiredType, editor);// 将不符合Bean的数据类型的Value转换成Bean需要的数据类型
 		}
 
 		boolean standardConversion = false;
@@ -274,7 +274,7 @@ class TypeConverterDelegate {
 				}
 			}
 
-			if (!ClassUtils.isAssignableValue(requiredType, convertedValue)) {
+			if (!ClassUtils.isAssignableValue(requiredType, convertedValue)) {// 检查值的类型和Bean中的需要的类型是否相同
 				if (conversionAttemptEx != null) {
 					// Original exception from former ConversionService call above...
 					throw conversionAttemptEx;
@@ -438,7 +438,7 @@ class TypeConverterDelegate {
 					logger.trace("Converting String to [" + requiredType + "] using property editor [" + editor + "]");
 				}
 				String newTextValue = (String) convertedValue;
-				return doConvertTextValue(oldValue, newTextValue, editor);
+				return doConvertTextValue(oldValue, newTextValue, editor);// 使用 PropertyEditor将String类型的value转换成Bean对应的属性类型
 			}
 			else if (String.class == requiredType) {
 				returnValue = convertedValue;
