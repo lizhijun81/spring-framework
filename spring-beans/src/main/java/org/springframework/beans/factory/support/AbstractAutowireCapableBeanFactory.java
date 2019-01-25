@@ -564,9 +564,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-			populateBean(beanName, mbd, instanceWrapper);
+			populateBean(beanName, mbd, instanceWrapper);// 将属性填充到BeanWrapper中
 			if (exposedObject != null) {
-				exposedObject = initializeBean(beanName, exposedObject, mbd);
+				exposedObject = initializeBean(beanName, exposedObject, mbd);// 初始化给定的bean
 			}
 		}
 		catch (Throwable ex) {
@@ -579,7 +579,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
-		if (earlySingletonExposure) {
+		if (earlySingletonExposure) {// 处理循环依赖
 			Object earlySingletonReference = getSingleton(beanName, false);
 			if (earlySingletonReference != null) {
 				if (exposedObject == bean) {
@@ -608,6 +608,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Register bean as disposable.
 		try {
+            // 为单例的Bean注册 disposable 方法，该方法在BeanFactory shutdown 时，回调；注册DisposableBean的destroy的方法，xml中的destroy-method、@Bean的destroy-method 指定的方法
 			registerDisposableBeanIfNecessary(beanName, bean, mbd);
 		}
 		catch (BeanDefinitionValidationException ex) {
@@ -1243,7 +1244,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// to support styles of field injection.
 		boolean continueWithPropertyPopulation = true;
 
-		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
+		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {// 回调 InstantiationAwareBeanPostProcessor 的 postProcessAfterInstantiation 方法
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
@@ -1282,7 +1283,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (hasInstAwareBpps || needsDepCheck) {
 			PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
 			if (hasInstAwareBpps) {
-				for (BeanPostProcessor bp : getBeanPostProcessors()) {
+				for (BeanPostProcessor bp : getBeanPostProcessors()) {// 回调 InstantiationAwareBeanPostProcessor 的 postProcessPropertyValues 方法
 					if (bp instanceof InstantiationAwareBeanPostProcessor) {
 						InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
 						pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
@@ -1636,15 +1637,17 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}, getAccessControlContext());
 		}
 		else {
-			invokeAwareMethods(beanName, bean);
+			invokeAwareMethods(beanName, bean);// 回调 各种 Aware 接口 BeanNameAware、BeanClassLoaderAware、BeanFactoryAware
 		}
 
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
+            // 回调 BeanProcessor 的 postProcessBeforeInitialization 方法
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
 		try {
+            // 回调各种初始化方法，如：InitializingBean的afterPropertiesSet，xml中指定的init-method、@Bean中指定的init-method 和 JSR 中的 @PostConstruct
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {
@@ -1654,6 +1657,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (mbd == null || !mbd.isSynthetic()) {
+            // 回调 BeanProcessor 的 postProcessAfterInitialization 方法
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 		return wrappedBean;

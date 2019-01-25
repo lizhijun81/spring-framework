@@ -72,6 +72,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 
 
 	/**
+     * 查询BeanFactory中所用使用了@AspectJ 的Bean，并且将该Bean封装成为Advisor
 	 * Look for AspectJ-annotated aspect beans in the current bean factory,
 	 * and return to a list of Spring AOP Advisors representing them.
 	 * <p>Creates a Spring Advisor for each AspectJ advice method.
@@ -99,7 +100,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 						if (beanType == null) {
 							continue;
 						}
-						if (this.advisorFactory.isAspect(beanType)) {
+						if (this.advisorFactory.isAspect(beanType)) {// 判断使用是否使用了@AspectJ
 							aspectNames.add(beanName);
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);
 							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {

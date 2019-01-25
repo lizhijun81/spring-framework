@@ -256,7 +256,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
 			if (targetSource != null) {
 				this.targetSourcedBeans.add(beanName);
-				Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(beanClass, beanName, targetSource);
+				Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(beanClass, beanName, targetSource);// 查找到符合该Bean的Advisor
 				Object proxy = createProxy(beanClass, beanName, specificInterceptors, targetSource);
 				this.proxyTypes.put(cacheKey, proxy.getClass());
 				return proxy;

@@ -294,12 +294,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
-				if (mbd.isSingleton()) {// 创建Bean
+				if (mbd.isSingleton()) {// 创建 Singleton 的 Bean
 					sharedInstance = getSingleton(beanName, new ObjectFactory<Object>() {
 						@Override
 						public Object getObject() throws BeansException {
 							try {
-								return createBean(beanName, mbd, args);// 创建Bean
+								return createBean(beanName, mbd, args);// 创建 Singleton 的 Bean
 							}
 							catch (BeansException ex) {
 								// Explicitly remove instance from singleton cache: It might have been put there
@@ -313,7 +313,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 
-				else if (mbd.isPrototype()) {
+				else if (mbd.isPrototype()) {// Prototype 的 bean
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;
 					try {
@@ -1659,6 +1659,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+     * 注册DisposableBean的destroy的方法，xml中的destroy-method、@Bean的destroy-method 指定的方法
+     *
+     *
 	 * Add the given bean to the list of disposable beans in this factory,
 	 * registering its DisposableBean interface and/or the given destroy method
 	 * to be called on factory shutdown (if applicable). Only applies to singletons.

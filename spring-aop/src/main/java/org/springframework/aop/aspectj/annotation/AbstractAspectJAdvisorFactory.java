@@ -140,7 +140,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	private static <A extends Annotation> AspectJAnnotation<A> findAnnotation(Method method, Class<A> toLookFor) {
 		A result = AnnotationUtils.findAnnotation(method, toLookFor);
 		if (result != null) {
-			return new AspectJAnnotation<>(result);
+			return new AspectJAnnotation<>(result);// 将 通知封装到AspectJAnnotation中
 		}
 		else {
 			return null;
@@ -188,11 +188,11 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 
 		public AspectJAnnotation(A annotation) {
 			this.annotation = annotation;
-			this.annotationType = determineAnnotationType(annotation);
+			this.annotationType = determineAnnotationType(annotation);// 决定采用哪种通知方式
 			// We know these methods exist with the same name on each object,
 			// but need to invoke them reflectively as there isn't a common interface.
 			try {
-				this.pointcutExpression = resolveExpression(annotation);
+				this.pointcutExpression = resolveExpression(annotation);// 获取 切点的表达式
 				this.argumentNames = (String) annotation.getClass().getMethod("argNames").invoke(annotation);
 			}
 			catch (Exception ex) {
@@ -201,7 +201,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 		}
 
 		private AspectJAnnotationType determineAnnotationType(A annotation) {
-			for (Class<?> type : annotationTypes.keySet()) {
+			for (Class<?> type : annotationTypes.keySet()) {// todo: 为啥采用不采用 map.get 呢？？
 				if (type.isInstance(annotation)) {
 					return annotationTypes.get(type);
 				}

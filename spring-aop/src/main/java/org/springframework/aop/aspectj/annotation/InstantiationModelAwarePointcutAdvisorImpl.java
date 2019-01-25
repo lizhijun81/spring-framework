@@ -77,11 +77,11 @@ class InstantiationModelAwarePointcutAdvisorImpl
 			Method aspectJAdviceMethod, AspectJAdvisorFactory aspectJAdvisorFactory,
 			MetadataAwareAspectInstanceFactory aspectInstanceFactory, int declarationOrder, String aspectName) {
 
-		this.declaredPointcut = declaredPointcut;
-		this.declaringClass = aspectJAdviceMethod.getDeclaringClass();
-		this.methodName = aspectJAdviceMethod.getName();
-		this.parameterTypes = aspectJAdviceMethod.getParameterTypes();
-		this.aspectJAdviceMethod = aspectJAdviceMethod;
+		this.declaredPointcut = declaredPointcut;// 切点表达式
+		this.declaringClass = aspectJAdviceMethod.getDeclaringClass();// 切面所在的类
+		this.methodName = aspectJAdviceMethod.getName();// 切面的中通知名称
+		this.parameterTypes = aspectJAdviceMethod.getParameterTypes();// 切面的中的返回参数类型
+		this.aspectJAdviceMethod = aspectJAdviceMethod;// 切面的中通知
 		this.aspectJAdvisorFactory = aspectJAdvisorFactory;
 		this.aspectInstanceFactory = aspectInstanceFactory;
 		this.declarationOrder = declarationOrder;

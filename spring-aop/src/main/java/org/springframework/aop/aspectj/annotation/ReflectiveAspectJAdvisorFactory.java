@@ -161,13 +161,13 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 		ReflectionUtils.doWithMethods(aspectClass, new ReflectionUtils.MethodCallback() {
 			@Override
 			public void doWith(Method method) throws IllegalArgumentException {
-				// Exclude pointcuts
+				// Exclude pointcuts 过滤掉 aspect 切面中的 定义的切点方法
 				if (AnnotationUtils.getAnnotation(method, Pointcut.class) == null) {
 					methods.add(method);
 				}
 			}
 		});
-		Collections.sort(methods, METHOD_COMPARATOR);
+		Collections.sort(methods, METHOD_COMPARATOR);// 对advisor进行排序Around, Before, After, AfterReturning, AfterThrowing
 		return methods;
 	}
 
@@ -196,7 +196,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 
 	@Override
 	public Advisor getAdvisor(Method candidateAdviceMethod, MetadataAwareAspectInstanceFactory aspectInstanceFactory,
-			int declarationOrderInAspect, String aspectName) {
+			int declarationOrderInAspect, String aspectName) {// 将 通知(Advice) 和 切点(Pointcut) 都封装到 Advisor 中
 
 		validate(aspectInstanceFactory.getAspectMetadata().getAspectClass());
 
@@ -210,9 +210,9 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 				this, aspectInstanceFactory, declarationOrderInAspect, aspectName);
 	}
 
-	private AspectJExpressionPointcut getPointcut(Method candidateAdviceMethod, Class<?> candidateAspectClass) {
+	private AspectJExpressionPointcut getPointcut(Method candidateAdviceMethod, Class<?> candidateAspectClass) {// 封装切点表达式到AspectJExpressionPointcut
 		AspectJAnnotation<?> aspectJAnnotation =
-				AbstractAspectJAdvisorFactory.findAspectJAnnotationOnMethod(candidateAdviceMethod);
+				AbstractAspectJAdvisorFactory.findAspectJAnnotationOnMethod(candidateAdviceMethod);// Advice 封装到AspectJAnnotation
 		if (aspectJAnnotation == null) {
 			return null;
 		}

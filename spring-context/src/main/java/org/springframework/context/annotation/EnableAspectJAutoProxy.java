@@ -113,6 +113,7 @@ import java.lang.annotation.Target;
 public @interface EnableAspectJAutoProxy {
 
 	/**
+     * 创建代理对象的方式：false 为使用 cglib 或者 Java的动态代理；true为只使用cglib创建代理
 	 * Indicate whether subclass-based (CGLIB) proxies are to be created as opposed
 	 * to standard Java interface-based proxies. The default is {@code false}.
 	 */

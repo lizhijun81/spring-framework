@@ -537,7 +537,7 @@ public abstract class ReflectionUtils {
 	 * @throws IllegalStateException if introspection fails
 	 */
 	public static void doWithMethods(Class<?> clazz, MethodCallback mc, MethodFilter mf) {
-		// Keep backing up the inheritance hierarchy.
+		// Keep backing up the inheritance hierarchy.// 获取 切面aspect中全部的方法，包括 接口中定义的default的方法
 		Method[] methods = getDeclaredMethods(clazz);
 		for (Method method : methods) {
 			if (mf != null && !mf.matches(method)) {
