@@ -147,7 +147,7 @@ public class AspectJProxyFactory extends ProxyCreatorSupport {
 		MetadataAwareAspectInstanceFactory instanceFactory;
 		if (am.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
 			// Create a shared aspect instance.
-			Object instance = getSingletonAspectInstance(aspectClass);
+			Object instance = getSingletonAspectInstance(aspectClass);// 实例化 切面aspect
 			instanceFactory = new SingletonMetadataAwareAspectInstanceFactory(instance, aspectName);
 		}
 		else {
