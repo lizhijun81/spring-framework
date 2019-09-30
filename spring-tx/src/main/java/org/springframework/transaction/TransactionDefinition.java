@@ -19,6 +19,10 @@ package org.springframework.transaction;
 import java.sql.Connection;
 
 /**
+ *
+ * 事物的定义的抽象：isolation level、propagation behavior、timeout
+ *      如：@Transaction 配置相关的属性，在 Spring内部将其封装成了 TransactionDefinition
+ *
  * Interface that defines Spring-compliant transaction properties.
  * Based on the propagation behavior definitions analogous to EJB CMT attributes.
  *

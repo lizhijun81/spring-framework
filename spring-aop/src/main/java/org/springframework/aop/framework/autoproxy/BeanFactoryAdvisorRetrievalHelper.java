@@ -71,7 +71,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 			if (advisorNames == null) {// 判断缓存中是否存在
 				// Do not initialize FactoryBeans here: We need to leave all regular beans
 				// uninitialized to let the auto-proxy creator apply to them!
-                // 返回通过实现 Advisor 接口来创建的切面
+                // 返回通过实现 Advisor 接口来创建的切面：从父、子容器中分别获取Advisor.class类型的类
 				advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 						this.beanFactory, Advisor.class, true, false);
 				this.cachedAdvisorBeanNames = advisorNames;// 缓存advisorNames

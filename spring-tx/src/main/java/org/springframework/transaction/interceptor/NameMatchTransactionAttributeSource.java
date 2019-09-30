@@ -106,7 +106,7 @@ public class NameMatchTransactionAttributeSource implements TransactionAttribute
 		}
 
 		// Look for direct name match.
-		String methodName = method.getName();
+		String methodName = method.getName();// 精确匹配
 		TransactionAttribute attr = this.nameMap.get(methodName);
 
 		if (attr == null) {
@@ -114,7 +114,7 @@ public class NameMatchTransactionAttributeSource implements TransactionAttribute
 			String bestNameMatch = null;
 			for (String mappedName : this.nameMap.keySet()) {
 				if (isMatch(methodName, mappedName) &&
-						(bestNameMatch == null || bestNameMatch.length() <= mappedName.length())) {
+						(bestNameMatch == null || bestNameMatch.length() <= mappedName.length())) {// 正则匹配
 					attr = this.nameMap.get(mappedName);
 					bestNameMatch = mappedName;
 				}

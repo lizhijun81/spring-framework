@@ -72,6 +72,8 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 
 
 	/**
+     * 获取到Spring 容器中所有的Bean name，按个判断Bean是否使用了@Aspect
+     *
      * 查询BeanFactory中所用使用了@AspectJ 的Bean，并且将该Bean封装成为Advisor
 	 * Look for AspectJ-annotated aspect beans in the current bean factory,
 	 * and return to a list of Spring AOP Advisors representing them.

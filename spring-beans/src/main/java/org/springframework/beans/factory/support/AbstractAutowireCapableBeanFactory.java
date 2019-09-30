@@ -470,8 +470,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
-            // 实现 aop 的【重要】地方 AbstractAutoProxyCreator.postProcessAfterInitialization() 返回了代理对象
-			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);// 回调 ﻿InstantiationAwareBeanPostProcessor 接口
+			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);// 回调 InstantiationAwareBeanPostProcessor 接口
 			if (bean != null) {
 				return bean;
 			}
@@ -1659,6 +1658,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		if (mbd == null || !mbd.isSynthetic()) {
             // 回调 BeanProcessor 的 postProcessAfterInitialization 方法
+            // 实现 aop 的【重要】地方 AbstractAutoProxyCreator.postProcessAfterInitialization() 返回了代理对象
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 		return wrappedBean;

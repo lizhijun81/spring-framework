@@ -29,6 +29,14 @@ import org.springframework.core.Ordered;
 import org.springframework.util.Assert;
 
 /**
+ *
+ * AdvisorAutoProxyCreator 自动代理创建器
+ *      自动创建 InfrastructureAdvisorAutoProxyCreator、AspectJAwareAdvisorAutoProxyCreator、AnnotationAwareAspectJAutoProxyCreator
+ * 在Spring 容器 中，只能存在一个 AdvisorAutoProxyCreator；AopConfigUtils 根据优先级 不断更新 Spring 容器中的AdvisorAutoProxyCreator的自动代理创建；
+ *
+ *  @EnableCaching、@EnableAspectJAutoProxy、@EnableTransactionManagement 都会引入AdvisorAutoProxyCreator，使得AdvisorAutoProxyCreator的优先级不断升高
+ *
+ *
  * Utility class for handling registration of AOP auto-proxy creators.
  *
  * <p>Only a single auto-proxy creator can be registered yet multiple concrete
@@ -105,6 +113,13 @@ public abstract class AopConfigUtils {
 	}
 
 
+    /**
+     * 在
+     * @param cls
+     * @param registry
+     * @param source
+     * @return
+     */
 	private static BeanDefinition registerOrEscalateApcAsRequired(Class<?> cls, BeanDefinitionRegistry registry, Object source) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {

@@ -507,7 +507,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 */
 	protected Advisor[] buildAdvisors(String beanName, Object[] specificInterceptors) {
 		// Handle prototypes correctly...
-		Advisor[] commonInterceptors = resolveInterceptorNames();
+		Advisor[] commonInterceptors = resolveInterceptorNames();//从Spring中获取Interceptor，并且将Intercept包装成Advisor
 
 		List<Object> allInterceptors = new ArrayList<>();
 		if (specificInterceptors != null) {

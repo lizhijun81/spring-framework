@@ -60,6 +60,8 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 	private static final boolean ejb3Present = ClassUtils.isPresent(
 			"javax.ejb.TransactionAttribute", AnnotationTransactionAttributeSource.class.getClassLoader());
 
+    // true: 只有 public 的方法上的 Transaction 才能被解析，故，事物只对 public 的方法生效，采用 Java Proxy 生成代理
+    // false: 允许对 protected/private 的方法将采用 CGLIB 的方式生成代理
 	private final boolean publicMethodsOnly;
 
 	private final Set<TransactionAnnotationParser> annotationParsers;
@@ -129,12 +131,12 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 
 
 	@Override
-	protected TransactionAttribute findTransactionAttribute(Method method) {
+	protected TransactionAttribute findTransactionAttribute(Method method) {// 根据方法名获取 TransactionAttribute
 		return determineTransactionAttribute(method);
 	}
 
 	@Override
-	protected TransactionAttribute findTransactionAttribute(Class<?> clazz) {
+	protected TransactionAttribute findTransactionAttribute(Class<?> clazz) {// 根据类名获取 TransactionAttribute
 		return determineTransactionAttribute(clazz);
 	}
 

@@ -217,11 +217,11 @@ public abstract class AopUtils {
 	 */
 	public static boolean canApply(Pointcut pc, Class<?> targetClass, boolean hasIntroductions) {
 		Assert.notNull(pc, "Pointcut must not be null");
-		if (!pc.getClassFilter().matches(targetClass)) {// Pointcut Advisor 类型的 advisor 的 pointcut 进行匹配
+		if (!pc.getClassFilter().matches(targetClass)) {// Pointcut 【切点】中的ClassFilter对目标类进行匹配
 			return false;
 		}
 
-		MethodMatcher methodMatcher = pc.getMethodMatcher();
+		MethodMatcher methodMatcher = pc.getMethodMatcher();// Pointcut 【切点】中的 MethodMatcher
 		if (methodMatcher == MethodMatcher.TRUE) {
 			// No need to iterate the methods if we're matching any method anyway...
 			return true;
@@ -232,13 +232,13 @@ public abstract class AopUtils {
 			introductionAwareMethodMatcher = (IntroductionAwareMethodMatcher) methodMatcher;
 		}
 
+        // 获取目标类中的所有实现接口【接口继承的接口】和父类【包含父类的父类和父类实现的接口】
 		Set<Class<?>> classes = new LinkedHashSet<>(ClassUtils.getAllInterfacesForClassAsSet(targetClass));
 		classes.add(targetClass);
 		for (Class<?> clazz : classes) {
-			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
-			for (Method method : methods) {
-				if ((introductionAwareMethodMatcher != null &&
-						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions)) ||
+			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);//获取当前类的所有方法
+			for (Method method : methods) {// 通过 Pointcut 的 MethodMatcher 对方法进行匹配
+				if ((introductionAwareMethodMatcher != null && introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions)) ||
 						methodMatcher.matches(method, targetClass)) {
 					return true;
 				}

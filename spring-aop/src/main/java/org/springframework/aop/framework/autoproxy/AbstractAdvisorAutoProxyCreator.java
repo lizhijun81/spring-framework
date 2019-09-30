@@ -123,9 +123,15 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	}
 
 	/**
+     * 判断满足条件的advisor；autoProxyCreator 自动代理创建器决定哪些advisor能够被用作切面
+     *
+     *   DefaultAutoProxyCreator: 默认自动代理创建器 根据advisor bean 的name的前缀来判断
+     *   InfrastructureAdvisorAutoProxyCreator: 基础设施自动代理创建器 根据advisor的bean的Role为ROLE_INFRASTRUCTURE；
+     *              即只能Bean的Role为ROLE_INFRASTRUCTURE的advisor能够用作切面
+     *
 	 * Return whether the Advisor bean with the given name is eligible
 	 * for proxying in the first place.
-	 * @param beanName the name of the Advisor bean
+	 * @param beanName the name of the Advisor bean; advisor bean 的name
 	 * @return whether the bean is eligible
 	 */
 	protected boolean isEligibleAdvisorBean(String beanName) {
