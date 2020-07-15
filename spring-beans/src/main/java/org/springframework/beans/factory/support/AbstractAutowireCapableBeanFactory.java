@@ -564,7 +564,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-			populateBean(beanName, mbd, instanceWrapper);// 将属性填充到BeanWrapper中
+			populateBean(beanName, mbd, instanceWrapper);// 将属性填充到BeanWrapper中，填充依赖的属性
 			if (exposedObject != null) {
 				exposedObject = initializeBean(beanName, exposedObject, mbd);// 初始化给定的bean
 			}
@@ -1088,7 +1088,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (mbd.getFactoryMethodName() != null)  {
-			return instantiateUsingFactoryMethod(beanName, mbd, args);// 通过工厂方法创建bean实例
+			return instantiateUsingFactoryMethod(beanName, mbd, args);// xml 中 factory-method 通过工厂方法创建bean实例； BeanDefinition 中的FactoryMethod
 		}
 
 		// Shortcut when re-creating the same bean...
@@ -1244,7 +1244,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// to support styles of field injection.
 		boolean continueWithPropertyPopulation = true;
 
-		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {// 回调 InstantiationAwareBeanPostProcessor 的 postProcessAfterInstantiation 方法
+		// todo：回调 InstantiationAwareBeanPostProcessor 的 postProcessAfterInstantiation 方法,判断是否需要进行对象属性的填充；目前不知道有啥用
+		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
@@ -1265,12 +1266,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
 
 			// Add property values based on autowire by name if applicable.
-			if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME) {
+			if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME) {// byName的方式自动装配
 				autowireByName(beanName, mbd, bw, newPvs);
 			}
 
 			// Add property values based on autowire by type if applicable.
-			if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+			if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {// byType的方式自动装配
 				autowireByType(beanName, mbd, bw, newPvs);
 			}
 
@@ -1283,7 +1284,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (hasInstAwareBpps || needsDepCheck) {
 			PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
 			if (hasInstAwareBpps) {
-				for (BeanPostProcessor bp : getBeanPostProcessors()) {// 回调 InstantiationAwareBeanPostProcessor 的 postProcessPropertyValues 方法
+				for (BeanPostProcessor bp : getBeanPostProcessors()) {
+				    // 回调 InstantiationAwareBeanPostProcessor 的 postProcessPropertyValues 方法;
+                    // 最重要的是使用 AutowiredAnnotationBeanPostProcessor 填充属性
 					if (bp instanceof InstantiationAwareBeanPostProcessor) {
 						InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
 						pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);

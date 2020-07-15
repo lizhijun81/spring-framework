@@ -1460,6 +1460,24 @@ configure(rootProject) {
 
 }
 
+project("spring-demo") {
+    description = "Spring Context Framework demo"
+
+    dependencies {
+        optional(project(":spring-core"))
+        optional(project(":spring-beans"))
+        optional(project(":spring-context"))
+        optional(project(":spring-jdbc"))
+        optional(project(":spring-tx"))
+        optional(project(":spring-orm"))
+        optional(project(":spring-web"))
+        optional(project(":spring-webmvc"))
+        optional(project(":spring-websocket"))
+        optional(project(":spring-aop"))
+        optional(project(":spring-aspects"))
+    }
+}
+
 configure([project(':spring-build-src'), project(':spring-framework-bom')]) {
     sonarqube {
         skipProject = true

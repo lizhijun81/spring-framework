@@ -70,6 +70,10 @@ abstract class ConfigurationClassUtils {
 
 
 	/**
+     * 判断BeanDefinition：<br/>
+     *      1、是否有@Configuration设置BeanDefinition的属性CONFIGURATION_CLASS_ATTRIBUTE=full <br/>
+     *      2、是否有@Component、@ComponentScan、@Import、@ImportResource、@Bean的方法设置BeanDefinition的属性lite <br/>
+     *
 	 * Check whether the given bean definition is a candidate for a configuration class
 	 * (or a nested component class declared within a configuration/component class,
 	 * to be auto-registered as well), and mark it accordingly.
@@ -150,6 +154,8 @@ abstract class ConfigurationClassUtils {
 	}
 
 	/**
+     * 检查 是否存在 @Component @ComponentScan @Import @ImportResource 的注解 或者有@Bean 的方法
+     * <br/>
 	 * Check the given metadata for a lite configuration class candidate
 	 * (e.g. a class annotated with {@code @Component} or just having
 	 * {@code @Import} declarations or {@code @Bean methods}).

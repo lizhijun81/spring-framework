@@ -353,7 +353,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	public PropertyValues postProcessPropertyValues(
 			PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeanCreationException {
 
-		InjectionMetadata metadata = findAutowiringMetadata(beanName, bean.getClass(), pvs);
+		InjectionMetadata metadata = findAutowiringMetadata(beanName, bean.getClass(), pvs);// 需要填充的属性
 		try {
 			metadata.inject(bean, beanName, pvs);
 		}
@@ -567,7 +567,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				Set<String> autowiredBeanNames = new LinkedHashSet<>(1);
 				TypeConverter typeConverter = beanFactory.getTypeConverter();
 				try {
-					value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);
+					value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);// 获取属性依赖的对象的Bean
 				}
 				catch (BeansException ex) {
 					throw new UnsatisfiedDependencyException(null, beanName, new InjectionPoint(field), ex);

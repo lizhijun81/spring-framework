@@ -728,7 +728,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		for (String beanName : beanNames) {
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
-				if (isFactoryBean(beanName)) {
+				if (isFactoryBean(beanName)) {// factoryBean 的方式创建Bean
 					final FactoryBean<?> factory = (FactoryBean<?>) getBean(FACTORY_BEAN_PREFIX + beanName);
 					boolean isEagerInit;
 					if (System.getSecurityManager() != null && factory instanceof SmartFactoryBean) {
@@ -747,7 +747,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						getBean(beanName);
 					}
 				}
-				else {
+				else {// 普通Bean的创建
 					getBean(beanName);
 				}
 			}
@@ -1125,7 +1125,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				autowiredBeanNames.add(autowiredBeanName);
 			}
 			return (instanceCandidate instanceof Class ?
-					descriptor.resolveCandidate(autowiredBeanName, type, this) : instanceCandidate);
+					descriptor.resolveCandidate(autowiredBeanName, type, this) : instanceCandidate);//从BeanFactory中获取Bean
 		}
 		finally {
 			ConstructorResolver.setCurrentInjectionPoint(previousInjectionPoint);
